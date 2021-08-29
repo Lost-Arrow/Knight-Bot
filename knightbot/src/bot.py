@@ -11,7 +11,15 @@ from knight import (
 if platform.system() == 'Windows':
     asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
+default_cogs = [
+    'admin',
+    'moderation',
+    'utility'
+]
+
 knight = Knight()
-knight.load_extension('knightbot.cogs.admin')
+
+for cog in default_cogs:
+    knight.load_extension(f'cogs.{cog}')
 
 knight.run(constants.get_token())

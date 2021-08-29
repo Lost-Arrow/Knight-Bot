@@ -1,10 +1,10 @@
-from src import (
+from knightbot.src import (
     constants,
     knight,
     logger
 )
 
-from src.constants import (
+from knightbot.src.constants import (
     initialise,
     get_current_time,
     get_name,
@@ -18,11 +18,11 @@ from src.constants import (
     get_default_prefix,
 )
 
-from src.knight import (
+from knightbot.src.knight import (
     Knight
 )
 
-from src.logger import (
+from knightbot.src.logger import (
     DEBUG,
     ERROR,
     INFO,

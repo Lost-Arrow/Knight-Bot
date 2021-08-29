@@ -90,7 +90,7 @@ class Knight (Bot):
 
     async def on_command_error (self, ctx, exception):
         _pretty_exception = f'```{"".join(traceback.format_exception(type(exception), exception, exception.__traceback__))}```'
-        await self.common_logger.log(ERROR, _pretty_exception)
+        await self.common_logger.guild_specific_log(ctx.guild, ERROR, _pretty_exception)
 
     async def on_guild_join (self, guild: Guild):
         await self.update_cache()
@@ -136,15 +136,23 @@ class Knight (Bot):
         await channel.send(embed = embed)
 
     async def on_message_delete (self, message: Message):
+        if message is None:
+            message = ' '
+
         embed = Embed(title       = 'Message Deleted!',
-                      description = message.content,
                       timestamp   = constants.get_current_time(),
                       type        = 'rich')
 
         embed.set_author(name     = message.author.name,
                          icon_url = message.author.avatar_url)
 
-        embed.set_footer(text = message.id)
+        embed.add_field(name   = 'Content',
+                        value  = message.content,
+                        inline = False)
+
+        embed.add_field(name   = 'Message ID',
+                        value  = message.id,
+                        inline = False)
 
         log_channel = int(self.cache['admin.json'][str(message.guild.id)]['log'])
         channel = utils.find(lambda c: c.id == log_channel, message.guild.channels)

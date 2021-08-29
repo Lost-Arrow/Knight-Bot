@@ -6,6 +6,7 @@ from abc import (
 from discord import (
     Color,
     Embed,
+    Guild,
     utils
 )
 
@@ -103,6 +104,10 @@ class CommonLogger:
     async def log (self, category: _LoggerCategory, message: str) -> None:
         await self.file_logger.log(category, message)
         await self.channel_logger.log(category, message)
+
+    async def guild_specific_log(self, guild: Guild, category: _LoggerCategory, message: str):
+        channel_id = int(self.channel_logger.bot.cache['admin.json'][str(guild.id)]['log'])
+        await ChannelLogger(self.channel_logger.bot, channel_id).log(category, message)
 
 DEBUG = Debug()
 ERROR = Error()
