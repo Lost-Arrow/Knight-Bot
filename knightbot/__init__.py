@@ -19,6 +19,7 @@ from knightbot.src.constants import (
 )
 
 from knightbot.src.knight import (
+    UNUSED,
     Knight
 )
 

@@ -20,13 +20,13 @@ from discord import (
     utils
 )
 from discord.ext.commands import (
-    Bot
+    Bot,
+    Context
 )
 from discord.ext.tasks import (
     loop
 )
 from logger import (
-    DEBUG,
     ERROR,
     INFO,
     FileLogger,
@@ -34,9 +34,13 @@ from logger import (
     CommonLogger
 )
 
+# noinspection PyUnusedLocal
+def UNUSED (*args, **kwargs):
+    pass
+
 async def _command_prefix_callback (bot: Bot, message: Message) -> [str]:
     user_id = bot.user.id
-    guild: Guild = message.guild
+    guild = message.guild
 
     prefixes = [f'<@!{user_id}>', f'<@{user_id}>']
 
@@ -47,7 +51,7 @@ async def _command_prefix_callback (bot: Bot, message: Message) -> [str]:
         prefixes.extend([constants.get_default_prefix()])
 
     return prefixes
-
+Bot.on_command_error()
 class Knight (Bot):
     _cache_directory        = '../resources/cache'
     _cache_backup_directory = '../resources/cache_backup'
@@ -88,11 +92,12 @@ class Knight (Bot):
             await self.common_logger.log(INFO, f'```Changing username from {self.user.name} to {required_name}```')
             await self.user.edit(username = required_name)
 
-    async def on_command_error (self, ctx, exception):
+    async def on_command_error (self, ctx: Context, exception):
         _pretty_exception = f'```{"".join(traceback.format_exception(type(exception), exception, exception.__traceback__))}```'
         await self.common_logger.guild_specific_log(ctx.guild, ERROR, _pretty_exception)
 
     async def on_guild_join (self, guild: Guild):
+        UNUSED(guild)
         await self.update_cache()
 
     async def on_guild_remove (self, guild: Guild):

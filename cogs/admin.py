@@ -15,6 +15,7 @@ from discord.ext.commands import (
 )
 from knightbot import (
     INFO,
+    UNUSED,
     Knight,
     get_current_time
 )
@@ -56,6 +57,7 @@ class Admin (Cog):
     @is_owner()
     async def load (self, ctx: Context, extension: str):
         """Loads a Cog extension"""
+        UNUSED(ctx)
         self.bot.load_extension(f'cogs.{extension}')
 
     @command(brief = 'Reloads a Cog')
@@ -69,6 +71,7 @@ class Admin (Cog):
     @is_owner()
     async def unload (self, ctx: Context, extension: str):
         """Unloads a Cog extension"""
+        UNUSED(ctx)
         self.bot.unload_extension(f'cogs.{extension}')
 
     @group(pass_context = True, brief = 'Cog utility commands')
@@ -113,6 +116,7 @@ class Admin (Cog):
     @is_owner()
     async def logout (self, ctx: Context):
         """Logs out the bot i.e. bot goes offline"""
+        UNUSED(ctx)
         await self.bot.common_logger.log(INFO, '```Logged out!```')
         self.bot.update_cache_file()
         await self.bot.close()
