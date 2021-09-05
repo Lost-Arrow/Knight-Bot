@@ -51,7 +51,7 @@ async def _command_prefix_callback (bot: Bot, message: Message) -> [str]:
         prefixes.extend([constants.get_default_prefix()])
 
     return prefixes
-Bot.on_command_error()
+
 class Knight (Bot):
     _cache_directory        = '../resources/cache'
     _cache_backup_directory = '../resources/cache_backup'
